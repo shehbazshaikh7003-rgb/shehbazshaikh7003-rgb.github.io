@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shehbaz Shaikh — Java Full Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1E1E2E;
+    --bg-side:#181825;
+    --bg-panel:#232336;
+    --bg-panel-hi:#2A2A40;
+    --border:#313244;
+    --text:#CDD6F4;
+    --text-dim:#8A8FB0;
+    --text-faint:#5C6079;
+    --teal:#94E2D5;
+    --peach:#F9E2AF;
+    --mint:#A6E3A1;
+    --mauve:#CBA6F7;
+    --red:#F38BA8;
+    --blue:#89B4FA;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.65;
+    font-size:15.5px;
+  }
+  a{color:var(--teal);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+  ::selection{background:var(--teal);color:#11111b;}
+  :focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+
+  .layout{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    max-width:1240px;
+    margin:0 auto;
+    min-height:100vh;
+  }
+
+  /* ---------- Sidebar / Explorer ---------- */
+  aside{
+    background:var(--bg-side);
+    border-right:1px solid var(--border);
+    padding:28px 0 24px 0;
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .brand{
+    padding:0 20px 22px 20px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:18px;
+  }
+  .brand .dot-row{display:flex;gap:6px;margin-bottom:16px;}
+  .brand .dot-row span{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .dot-row span:nth-child(1){background:#F38BA8;}
+  .dot-row span:nth-child(2){background:#F9E2AF;}
+  .dot-row span:nth-child(3){background:#A6E3A1;}
+  .brand h1{
+    font-family:'JetBrains Mono', monospace;
+    font-size:1.02rem;
+    font-weight:600;
+    margin:0;
+    color:var(--text);
+  }
+  .brand .status{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-top:10px;
+    font-size:0.76rem;
+    color:var(--mint);
+  }
+  .brand .status .pulse{
+    width:7px;height:7px;border-radius:50%;background:var(--mint);
+    box-shadow:0 0 0 0 rgba(166,227,161,0.6);
+    animation:pulse 2s infinite;
+  }
+  @media (prefers-reduced-motion: reduce){ .brand .status .pulse{animation:none;} }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(166,227,161,0.5);}
+    70%{box-shadow:0 0 0 7px rgba(166,227,161,0);}
+    100%{box-shadow:0 0 0 0 rgba(166,227,161,0);}
+  }
+
+  .explorer-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    color:var(--text-faint);
+    padding:0 20px;
+    margin-bottom:6px;
+    letter-spacing:0.03em;
+  }
+  nav{padding:0 12px;}
+  nav a{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.83rem;
+    color:var(--text-dim);
+    padding:7px 8px;
+    border-radius:5px;
+    margin-bottom:1px;
+  }
+  nav a:hover{background:var(--bg-panel);color:var(--text);text-decoration:none;}
+  nav a.sub{padding-left:26px;font-size:0.79rem;color:var(--text-faint);}
+  nav a .icon{opacity:0.7;font-size:0.9em;}
+
+  .side-contact{
+    margin-top:auto;
+    padding:18px 20px 0 20px;
+    border-top:1px solid var(--border);
+  }
+  .side-contact a{
+    display:block;
+    font-size:0.78rem;
+    color:var(--text-dim);
+    margin-bottom:8px;
+    font-family:'JetBrains Mono', monospace;
+  }
+  .side-contact a:hover{color:var(--teal);}
+
+  /* ---------- Main ---------- */
+  main{padding:0 0 80px 0;}
+
+  .tabbar{
+    display:flex;
+    border-bottom:1px solid var(--border);
+    background:var(--bg-side);
+    position:sticky;
+    top:0;
+    z-index:5;
+    overflow-x:auto;
+  }
+  .tabbar .tab{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--text-faint);
+    padding:12px 18px;
+    border-right:1px solid var(--border);
+    white-space:nowrap;
+  }
+  .tabbar .tab.active{color:var(--teal);background:var(--bg);border-top:2px solid var(--teal);margin-top:-1px;}
+
+  .hero{
+    padding:56px 44px 40px 44px;
+    border-bottom:1px solid var(--border);
+  }
+  .terminal{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    max-width:640px;
+    box-shadow:0 20px 60px -20px rgba(0,0,0,0.5);
+  }
+  .terminal-bar{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:10px 14px;
+    background:var(--bg-panel-hi);
+    border-bottom:1px solid var(--border);
+  }
+  .terminal-bar span{width:10px;height:10px;border-radius:50%;}
+  .terminal-bar span:nth-child(1){background:#F38BA8;}
+  .terminal-bar span:nth-child(2){background:#F9E2AF;}
+  .terminal-bar span:nth-child(3){background:#A6E3A1;}
+  .terminal-bar .path{
+    margin-left:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:var(--text-faint);
+  }
+  .terminal-body{
+    padding:22px 24px 26px 24px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.92rem;
+  }
+  .terminal-body .l{display:block;white-space:pre;}
+  .k{color:var(--blue);}
+  .s{color:var(--mint);}
+  .p{color:var(--text-dim);}
+  .c{color:var(--mauve);}
+  .cursor{display:inline-block;width:8px;height:1.1em;background:var(--teal);vertical-align:text-bottom;animation:blink 1s step-end infinite;}
+  @media (prefers-reduced-motion: reduce){ .cursor{animation:none;} }
+  @keyframes blink{50%{opacity:0;}}
+
+  .hero-sub{
+    max-width:56ch;
+    margin-top:26px;
+    color:var(--text-dim);
+    font-size:1rem;
+  }
+
+  section{
+    padding:48px 44px;
+    border-bottom:1px solid var(--border);
+    scroll-margin-top:52px;
+  }
+  section:last-child{border-bottom:none;}
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:28px;
+  }
+  .sec-head .tag{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--text-faint);
+    font-size:0.85rem;
+  }
+  .sec-head h2{
+    font-family:'JetBrains Mono', monospace;
+    font-size:1.15rem;
+    font-weight:600;
+    color:var(--text);
+    margin:0;
+  }
+  .sec-head h2 .fn{color:var(--blue);}
+  .sec-head h2 .pu{color:var(--text-faint);}
+
+  .entry{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:22px 24px;
+    margin-bottom:18px;
+  }
+  .entry:last-child{margin-bottom:0;}
+  .entry-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:6px 20px;
+    margin-bottom:6px;
+  }
+  .entry-head h3{
+    font-size:1.02rem;
+    font-weight:600;
+    color:var(--text);
+    margin:0;
+    font-family:'Inter',sans-serif;
+  }
+  .entry-org{color:var(--teal);font-size:0.86rem;font-weight:500;margin-top:2px;}
+  .entry-date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.74rem;
+    color:var(--text-faint);
+    white-space:nowrap;
+  }
+  .entry ul{margin:12px 0 0 0;padding-left:18px;color:var(--text-dim);}
+  .entry ul li{margin-bottom:6px;font-size:0.92rem;}
+  .entry ul li:last-child{margin-bottom:0;}
+  .entry ul li::marker{color:var(--teal);}
+
+  .stack-line{
+    margin-top:14px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--text-faint);
+  }
+  .stack-line .arr{color:var(--text-faint);}
+  .stack-line .str{color:var(--peach);}
+
+  .skills-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .skill-card{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:18px 20px;
+  }
+  .skill-card .key{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.76rem;
+    color:var(--text-faint);
+    margin-bottom:10px;
+  }
+  .skill-card .vals{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+    line-height:1.9;
+  }
+  .skill-card .vals .str{color:var(--peach);}
+  .skill-card .vals .cm{color:var(--text-faint);}
+
+  .edu-entry{background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;padding:20px 24px;}
+  .edu-entry .entry-head{margin-bottom:0;}
+  .cert-note{
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid var(--border);
+    color:var(--text-dim);
+    font-size:0.88rem;
+  }
+  .cert-note strong{color:var(--text);}
+
+  footer{
+    padding:36px 44px;
+    color:var(--text-faint);
+    font-size:0.78rem;
+    font-family:'JetBrains Mono', monospace;
+  }
+
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;}
+    aside{position:relative;height:auto;}
+    .hero{padding:40px 22px 32px 22px;}
+    section{padding:36px 22px;}
+    footer{padding:28px 22px;}
+    .skills-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <aside>
+    <div class="brand">
+      <div class="dot-row"><span></span><span></span><span></span></div>
+      <h1>shehbaz-shaikh</h1>
+      <div class="status"><span class="pulse"></span>open to opportunities</div>
+    </div>
+
+    <div class="explorer-label">EXPLORER</div>
+    <nav>
+      <a href="#profile"><span class="icon">📄</span>profile.md</a>
+      <a href="#experience"><span class="icon">📁</span>experience.js</a>
+      <a href="#projects"><span class="icon">📁</span>projects/</a>
+      <a href="#projects" class="sub">employee-mgmt.java</a>
+      <a href="#projects" class="sub">student-record.java</a>
+      <a href="#projects" class="sub">hospital-mgmt.java</a>
+      <a href="#skills"><span class="icon">📄</span>skills.json</a>
+      <a href="#education"><span class="icon">📄</span>education.md</a>
+    </nav>
+
+    <div class="side-contact">
+      <a href="mailto:shehbazshaikh7003@gmail.com">shehbazshaikh7003@gmail.com</a>
+      <a href="tel:+918652313307">+91 86523 13307</a>
+      <a href="https://github.com/YOUR-USERNAME" target="_blank" rel="noopener">github.com/YOUR-USERNAME</a>
+      <a href="https://linkedin.com/in/YOUR-USERNAME" target="_blank" rel="noopener">linkedin.com/in/YOUR-USERNAME</a>
+    </div>
+  </aside>
+
+  <main>
+    <div class="tabbar">
+      <div class="tab active">profile.md</div>
+      <div class="tab">experience.js</div>
+      <div class="tab">projects</div>
+      <div class="tab">skills.json</div>
+    </div>
+
+    <div class="hero">
+      <div class="terminal">
+        <div class="terminal-bar">
+          <span></span><span></span><span></span>
+          <div class="path">~/portfolio — zsh</div>
+        </div>
+        <div class="terminal-body">
+          <span class="l"><span class="k">const</span> developer = {</span>
+          <span class="l">  name: <span class="s">"Shehbaz Shaikh"</span>,</span>
+          <span class="l">  role: <span class="s">"Java Full Stack Developer"</span>,</span>
+          <span class="l">  location: <span class="s">"Pune, India"</span>,</span>
+          <span class="l">  stack: [<span class="s">"Java"</span>, <span class="s">"Spring Boot"</span>, <span class="s">"React"</span>, <span class="s">"MySQL"</span>],</span>
+          <span class="l">  status: <span class="s">"open_to_work"</span></span>
+          <span class="l">}<span class="cursor"></span></span>
+        </div>
+      </div>
+      <p class="hero-sub">
+        Trained in building complete, database-backed applications — from REST APIs and
+        relational schemas to responsive front ends. Comfortable across the stack: Java and
+        Spring Boot on the backend, MySQL and Hibernate for data, React.js on the client.
+      </p>
+    </div>
+
+    <section id="profile">
+      <div class="sec-head">
+        <span class="tag mono">01</span>
+        <h2><span class="fn">function</span> <span class="pu">Profile()</span></h2>
+      </div>
+      <p style="color:var(--text-dim); max-width:62ch; font-size:0.96rem;">
+        BCA graduate who moved from accounts and cash handling into software development,
+        completing a hands-on Java Full Stack program covering Core Java, Spring Boot, Hibernate,
+        MySQL and React. Focused on writing clean, CRUD-driven backend logic and connecting it
+        reliably to real interfaces — three end-to-end record-management systems built so far.
+      </p>
+    </section>
+
+    <section id="experience">
+      <div class="sec-head">
+        <span class="tag mono">02</span>
+        <h2><span class="fn">function</span> <span class="pu">Experience()</span></h2>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <h3>Java Full Stack Developer Trainee</h3>
+            <div class="entry-org">The Kiran Academy, Pune, India</div>
+          </div>
+          <div class="entry-date">JUL 2025 – FEB 2026</div>
+        </div>
+        <ul>
+          <li>Built full stack applications using Java, Spring Boot, Hibernate, MySQL, and React.js, covering backend processing and responsive UI.</li>
+          <li>Implemented REST APIs and CRUD operations to manage and retrieve data from MySQL databases.</li>
+          <li>Worked across multiple projects covering end-to-end development — frontend design through backend integration.</li>
+          <li>Improved front-end/back-end integration for smooth data flow and better application performance.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <h3>Cashier / Accounts Assistant</h3>
+            <div class="entry-org">SK Jewelry Store, Jalgaon, India</div>
+          </div>
+          <div class="entry-date">2024 – 2025</div>
+        </div>
+        <ul>
+          <li>Managed daily cash transactions, billing, and customer payments with a focus on accuracy and reconciliation.</li>
+          <li>Maintained sales and accounting records, tracking day-to-day financial bookkeeping.</li>
+          <li>Handled customer interactions and checkout operations while keeping cash registers accurate.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="sec-head">
+        <span class="tag mono">03</span>
+        <h2><span class="fn">function</span> <span class="pu">Projects()</span></h2>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <h3>Employee Management System</h3>
+          <div class="entry-date">NOV 2025</div>
+        </div>
+        <ul>
+          <li>Developed a system to manage employee records and department details efficiently.</li>
+          <li>Implemented CRUD operations and database integration with a scalable backend architecture for organized, secure data management.</li>
+        </ul>
+        <div class="stack-line"><span class="arr">stack →</span> [<span class="str">"Java"</span>, <span class="str">"Spring Boot"</span>, <span class="str">"Hibernate"</span>, <span class="str">"MySQL"</span>]</div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <h3>Student Record &amp; Attendance Management System</h3>
+          <div class="entry-date">JAN 2026</div>
+        </div>
+        <ul>
+          <li>Built a system to manage student records and attendance efficiently.</li>
+          <li>Implemented CRUD operations, real-time data tracking, and a scalable backend architecture for structured, secure data management.</li>
+        </ul>
+        <div class="stack-line"><span class="arr">stack →</span> [<span class="str">"Java"</span>, <span class="str">"Spring Boot"</span>, <span class="str">"Hibernate (JPA)"</span>, <span class="str">"MySQL"</span>, <span class="str">"REST APIs"</span>, <span class="str">"Maven"</span>]</div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <h3>Hospital Management System</h3>
+          <div class="entry-date">AUG 2026 – SEP 2026</div>
+        </div>
+        <ul>
+          <li>Developed a console-based application to manage patient registration, doctor records, and appointment booking with real-time availability checks.</li>
+          <li>Implemented secure CRUD operations using JDBC PreparedStatements and designed a relational schema with foreign key relationships across patients, doctors, and appointments.</li>
+        </ul>
+        <div class="stack-line"><span class="arr">stack →</span> [<span class="str">"Java"</span>, <span class="str">"JDBC"</span>, <span class="str">"MySQL"</span>]</div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="sec-head">
+        <span class="tag mono">04</span>
+        <h2><span class="fn">const</span> <span class="pu">skills =</span></h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="key">"languages":</div>
+          <div class="vals"><span class="str">"Java"</span>, <span class="str">"JavaScript"</span>, <span class="str">"SQL"</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="key">"frameworks":</div>
+          <div class="vals"><span class="str">"Spring Boot"</span>, <span class="str">"Spring MVC"</span>, <span class="str">"React.js"</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="key">"database":</div>
+          <div class="vals"><span class="str">"MySQL"</span>, <span class="str">"JDBC"</span>, <span class="str">"Hibernate (JPA)"</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="key">"tools":</div>
+          <div class="vals"><span class="str">"Maven"</span>, <span class="str">"Git"</span>, <span class="str">"GitHub"</span>, <span class="str">"Eclipse"</span>, <span class="str">"VS Code"</span>, <span class="str">"REST APIs"</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="sec-head">
+        <span class="tag mono">05</span>
+        <h2><span class="fn">function</span> <span class="pu">Education()</span></h2>
+      </div>
+      <div class="edu-entry">
+        <div class="entry-head">
+          <div>
+            <h3>Bachelor of Computer Application (BCA)</h3>
+            <div class="entry-org">SSBT College of Engineering and Technology, Jalgaon — North Maharashtra University</div>
+          </div>
+          <div class="entry-date">2024</div>
+        </div>
+        <div class="cert-note">
+          <strong>Java Full Stack Development Certification</strong> — The Kiran Academy<br>
+          Core Java, JDBC, Hibernate, Spring Boot, MySQL, and Full Stack Development with hands-on project implementation.
+        </div>
+      </div>
+    </section>
+
+    <footer>// end of file — shehbaz-shaikh/portfolio</footer>
+  </main>
+</div>
+
+</body>
+</html>
